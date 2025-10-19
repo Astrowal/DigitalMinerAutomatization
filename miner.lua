@@ -37,12 +37,11 @@ function main(i)
    if GlobalVars.m_pMiner then
       GlobalVars.m_pMiner.start()
       
-      -- Warte 2 Sekunden damit der Miner die Blöcke scannen kann
+      -- wait 2 seconds for miner to scan blocks
       os.sleep(2)
 
       local to_mine_cached = GlobalVars.m_pMiner.getToMine()
       
-      -- FIXED: Tracking-Variablen damit Nachrichten nur einmal gesendet werden
       local sent_20 = false
       local sent_50 = false
       local sent_70 = false
@@ -52,12 +51,10 @@ function main(i)
          local seconds = (to_mine * 0.5)
 
          if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-            -- Berechne abgebaute Prozente
             local mined = to_mine_cached - to_mine
             local percentage = (mined / to_mine_cached) * 100
             percentage = math.floor(percentage)
 
-            -- Sende Prozent-Nachrichten in Bereichen
             if percentage >= 20 and percentage < 35 and not sent_20 then
                local text = string.format("20%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
@@ -80,7 +77,6 @@ function main(i)
             end
          end
 
-         -- FIXED: Korrekter Modulo-Check (== 0 fehlte!)
          if to_mine % 5 == 0 then
             local text = string.format("To mine: %d, ETA: %s", to_mine, utils_get_time(seconds))
             print(text)
@@ -120,7 +116,7 @@ function setup()
    shell.run("wget https://raw.githubusercontent.com/Astrowal/DigitalMinerAutomatization/refs/heads/main/utils.lua")
    
    if not fs.exists("utils.lua") then
-      error("utils.lua konnte nicht heruntergeladen werden!")
+      error("utils.lua download failed!")
    end
 end
 
@@ -138,3 +134,4 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
