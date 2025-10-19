@@ -45,6 +45,7 @@ function main(i)
       local sent_20 = false
       local sent_50 = false
       local sent_70 = false
+      local sent_90 = false
 
       while GlobalVars.m_pMiner.isRunning() do
          local to_mine = GlobalVars.m_pMiner.getToMine()
@@ -75,6 +76,13 @@ function main(i)
                sent_70 = true
                os.sleep(1)
             end
+            
+            if percentage >= 90 and percentage < 95 and not sent_90 then
+            local text ? string.format("90% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+            GlobalVars.m_pChatBox.sendMessage(text, "Miner")
+            sent_90 = true
+            os.sleep(1)
+    
          end
 
          if to_mine % 5 == 0 then
@@ -134,4 +142,5 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
 
