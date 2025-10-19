@@ -35,38 +35,12 @@ function main(i)
    os.sleep(0.15)
 
    if GlobalVars.m_pMiner then
-      print("=== DEBUG START ===")
-      print("Miner gefunden:", GlobalVars.m_pMiner ~= nil)
-      print("ChatBox gefunden:", GlobalVars.m_pChatBox ~= nil)
-      print("ChatBox Boolean:", GlobalVars.m_bHasChatBox)
-      print("SEND_TO_CHAT:", Settings.SEND_TO_CHAT)
-      
-      if GlobalVars.m_pChatBox then
-         print("Versuche Test-Nachricht zu senden...")
-         local success, err = pcall(function()
-            GlobalVars.m_pChatBox.sendMessage("Miner startet Runde " .. i .. "!", "Miner")
-         end)
-         print("Test-Nachricht Erfolg:", success)
-         if not success then
-            print("FEHLER beim Senden:", err)
-         end
-      else
-         print("PROBLEM: ChatBox Object ist nil!")
-         print("Verfuegbare Peripherals:")
-         for _, side in pairs(peripheral.getNames()) do
-            print("  " .. side .. " -> " .. peripheral.getType(side))
-         end
-      end
-      print("=== DEBUG ENDE ===")
-      
       GlobalVars.m_pMiner.start()
       
       -- Warte 2 Sekunden damit der Miner die Blöcke scannen kann
-      print("Warte auf Miner-Scan...")
       os.sleep(2)
 
       local to_mine_cached = GlobalVars.m_pMiner.getToMine()
-      print("Blocks zu minen:", to_mine_cached)
       
       -- FIXED: Tracking-Variablen damit Nachrichten nur einmal gesendet werden
       local sent_20 = false
@@ -78,46 +52,29 @@ function main(i)
          local seconds = (to_mine * 0.5)
 
          if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-            -- FIXED: Berechne abgebaute Prozente (nicht verbleibende!)
+            -- Berechne abgebaute Prozente
             local mined = to_mine_cached - to_mine
             local percentage = (mined / to_mine_cached) * 100
             percentage = math.floor(percentage)
 
-            -- Debug: Zeige aktuellen Fortschritt
-            if to_mine % 10 == 0 then
-               print("Progress: " .. percentage .. "% (" .. mined .. "/" .. to_mine_cached .. ") | Flags: 20=" .. tostring(sent_20) .. " 50=" .. tostring(sent_50) .. " 70=" .. tostring(sent_70))
-            end
-
-            -- FIXED: Verwende Prozent-Bereiche statt exakte Werte damit nichts übersprungen wird
+            -- Sende Prozent-Nachrichten in Bereichen
             if percentage >= 20 and percentage < 35 and not sent_20 then
                local text = string.format("20%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
-               print("Sende 20% Nachricht...")
-               local success = pcall(function()
-                  GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               end)
-               print("20% Nachricht gesendet:", success)
+               GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_20 = true
                os.sleep(1)
             end
 
             if percentage >= 50 and percentage < 65 and not sent_50 then
                local text = string.format("50%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
-               print("Sende 50% Nachricht...")
-               local success = pcall(function()
-                  GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               end)
-               print("50% Nachricht gesendet:", success)
+               GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_50 = true
                os.sleep(1)
             end
 
             if percentage >= 70 and percentage < 85 and not sent_70 then
                local text = string.format("70%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
-               print("Sende 70% Nachricht...")
-               local success = pcall(function()
-                  GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               end)
-               print("70% Nachricht gesendet:", success)
+               GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_70 = true
                os.sleep(1)
             end
@@ -132,14 +89,12 @@ function main(i)
          if (to_mine == 0) then
             if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
                local text = string.format("Done (%d/%d) rounds", i, Settings.MAX_CHUNKS)
-               print("Sende Done-Nachricht...")
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                os.sleep(1)
             end
                 
             if i == Settings.MAX_CHUNKS and GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
                local text = string.format("Pick me up! I am finished!")
-               print("Sende Finish-Nachricht...")
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                os.sleep(1)
             end
@@ -162,14 +117,10 @@ function setup()
       sleep(1)
    end
 
-   -- FIXED: Lädt deine gefixte Version von GitHub
    shell.run("wget https://raw.githubusercontent.com/Astrowal/DigitalMinerAutomatization/refs/heads/main/utils.lua")
    
-   -- Falls Download fehlschlägt, Warnung ausgeben
    if not fs.exists("utils.lua") then
-      print("WARNUNG: utils.lua konnte nicht heruntergeladen werden!")
-      print("Stelle sicher dass HTTP aktiviert ist und die URL korrekt ist!")
-      error("utils.lua fehlt!")
+      error("utils.lua konnte nicht heruntergeladen werden!")
    end
 end
 
@@ -187,5 +138,3 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
-
-print("=== ALLE RUNDEN ABGESCHLOSSEN ===")
