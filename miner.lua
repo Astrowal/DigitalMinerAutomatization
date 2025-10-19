@@ -39,7 +39,7 @@ function main(i)
 
       local to_mine_cached = GlobalVars.m_pMiner.getToMine()
       
-      -- FIXED: Tracking-Variablen für Prozent-Nachrichten
+      -- FIXED: Tracking-Variablen damit Nachrichten nur einmal gesendet werden
       local sent_20 = false
       local sent_50 = false
       local sent_70 = false
@@ -54,33 +54,33 @@ function main(i)
             local percentage = (mined / to_mine_cached) * 100
             percentage = math.floor(percentage)
 
-            -- FIXED: Sende jede Nachricht nur einmal
+            -- FIXED: Sende jede Nachricht nur einmal wenn Prozentsatz erreicht
             if percentage >= 20 and not sent_20 then
-               local text = string.format("20%% abgebaut (%d/%d)", mined, to_mine_cached)
+               local text = string.format("20%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_20 = true
                os.sleep(1)
             end
 
             if percentage >= 50 and not sent_50 then
-               local text = string.format("50%% abgebaut (%d/%d)", mined, to_mine_cached)
+               local text = string.format("50%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_50 = true
                os.sleep(1)
             end
 
             if percentage >= 70 and not sent_70 then
-               local text = string.format("70%% abgebaut (%d/%d)", mined, to_mine_cached)
+               local text = string.format("70%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_70 = true
                os.sleep(1)
             end
          end
 
-         -- FIXED: Korrekter Modulo-Check
+         -- FIXED: Korrekter Modulo-Check (== 0 fehlte!)
          if to_mine % 5 == 0 then
             local text = string.format("To mine: %d, ETA: %s", to_mine, utils_get_time(seconds))
-		      print(text)
+            print(text)
          end
 
          if (to_mine == 0) then
@@ -132,3 +132,4 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
