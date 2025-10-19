@@ -1,5 +1,5 @@
 function utils_get_peripheralwrap(nameOrSuffix)
-    for , side in pairs(peripheral.getNames()) do
+    for _, side in pairs(peripheral.getNames()) do
         local t = peripheral.getType(side)
         -- exact match (legacy), case-insensitive suffix match for namespaced types
         if t == nameOrSuffix
@@ -157,3 +157,4 @@ function utils_percentage_in_range(percentage, percentage_target, tolerance)
     return percentage >= lower_bound and percentage <= upper_bound
 
 end
+
