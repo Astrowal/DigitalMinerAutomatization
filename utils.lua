@@ -1,4 +1,4 @@
--- FIXED utils.lua - ChatBox Bug behoben + Debug
+-- FIXED utils.lua - ChatBox Bug behoben
 -- Alle Bewegungen bleiben EXAKT gleich!
 
 function utils_get_peripheral_wrap(name)
@@ -8,12 +8,9 @@ function utils_get_peripheral_wrap(name)
         local type = peripheral.getType(side)
         
         if type == name then
-           print("[DEBUG] Gefunden: " .. name .. " auf " .. side)
            return peripheral.wrap(side)
         end
-    end
-    
-    print("[DEBUG] NICHT gefunden: " .. name)
+    end   
     return nil
 end
 
@@ -113,65 +110,34 @@ function utils_place_blocks(Blocks, GlobalVars)
 				   GlobalVars.m_bHasChatBox = true
 				   turtle.select(chatbox_block_index)
 				   turtle.placeUp()
-				   print("[DEBUG] ChatBox platziert!")
 				end
 		    end
 
 			os.sleep(0.3)
 
-			-- DEBUG: Zeige alle verfügbaren Peripherals
-			print("[DEBUG] === Suche Peripherals ===")
-			for _, side in pairs(peripheral.getNames()) do
-			    local pType = peripheral.getType(side)
-			    print("[DEBUG] " .. side .. " -> " .. pType)
-			end
-			
-			-- FIXED: Suche nach ALLEN möglichen ChatBox-Varianten!
-			print("[DEBUG] Suche ChatBox...")
+			-- FIXED: Suche nach allen ChatBox-Varianten
 			GlobalVars.m_pChatBox = utils_get_peripheral_wrap("chatBox")
 			
 			if not GlobalVars.m_pChatBox then
-			    print("[DEBUG] 'chatBox' nicht gefunden, versuche 'chat_box'...")
 			    GlobalVars.m_pChatBox = utils_get_peripheral_wrap("chat_box")
 			end
 			
 			if not GlobalVars.m_pChatBox then
-			    print("[DEBUG] 'chat_box' nicht gefunden, versuche direktes Wrapping...")
-			    -- Versuche alle Seiten direkt
+			    -- Fallback: Suche per Pattern
 			    for _, side in pairs(peripheral.getNames()) do
 			        local pType = peripheral.getType(side)
 			        if pType:find("chat") or pType:find("Chat") then
-			            print("[DEBUG] ChatBox gefunden via Pattern auf: " .. side)
 			            GlobalVars.m_pChatBox = peripheral.wrap(side)
 			            break
 			        end
 			    end
 			end
 			
-			if GlobalVars.m_pChatBox then
-			    print("[DEBUG] *** ChatBox ERFOLGREICH verbunden! ***")
-			    -- Test-Nachricht
-			    local ok, err = pcall(function()
-			        GlobalVars.m_pChatBox.sendMessage("Turtle bereit!", "Miner")
-			    end)
-			    if ok then
-			        print("[DEBUG] Test-Nachricht gesendet!")
-			    else
-			        print("[DEBUG] FEHLER beim Senden: " .. tostring(err))
-			    end
-			else
-			    print("[DEBUG] *** FEHLER: ChatBox NICHT gefunden! ***")
+			if not GlobalVars.m_pChatBox then
 			    GlobalVars.m_bHasChatBox = false
 			end
 			
-			print("[DEBUG] Suche Miner...")
 			GlobalVars.m_pMiner = utils_get_peripheral_wrap("digitalMiner")
-			
-			if GlobalVars.m_pMiner then
-			    print("[DEBUG] *** Miner ERFOLGREICH verbunden! ***")
-			else
-			    print("[DEBUG] *** FEHLER: Miner NICHT gefunden! ***")
-			end
 	    end
 	end
 end
