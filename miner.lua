@@ -110,7 +110,7 @@ function setup()
       sleep(1)
    end
 
-   shell.run("wget https://raw.githubusercontent.com/martinjanas/DigitalMinerAutomatization/main/utils.lua")
+   shell.run("wget https://raw.githubusercontent.com/Astrowal/DigitalMinerAutomatization/main/utils.lua")
 end
 
 done = false
@@ -126,4 +126,5 @@ for i = 1, Settings.MAX_CHUNKS do
    GlobalVars.m_bHasChatBox = false
     
    main(i)
+
 end
