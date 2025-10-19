@@ -34,53 +34,41 @@ function main(i)
 
    os.sleep(0.15)
 
-   if GlobalVars.m_pMiner then
+      if GlobalVars.m_pMiner then
       GlobalVars.m_pMiner.start()
 
       local to_mine_cached = GlobalVars.m_pMiner.getToMine()
-      
-      -- FIXED: Tracking-Variablen damit Nachrichten nur einmal gesendet werden
-      local sent_20 = false
-      local sent_50 = false
-      local sent_70 = false
 
       while GlobalVars.m_pMiner.isRunning() do
          local to_mine = GlobalVars.m_pMiner.getToMine()
          local seconds = (to_mine * 0.5)
 
          if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-            -- FIXED: Berechne abgebaute Prozente (nicht verbleibende!)
-            local mined = to_mine_cached - to_mine
-            local percentage = (mined / to_mine_cached) * 100
+            local percentage = (to_mine / to_mine_cached) * 100
             percentage = math.floor(percentage)
 
-            -- FIXED: Sende jede Nachricht nur einmal wenn Prozentsatz erreicht
-            if percentage >= 20 and not sent_20 then
-               local text = string.format("20%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+            if utils_percentage_in_range(percentage, 80, 1) then
+               local text = string.format("20%% of Blocks Mined (%d/%d)", to_mine, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               sent_20 = true
-               os.sleep(1)
+               os.sleep(2)
             end
 
-            if percentage >= 50 and not sent_50 then
-               local text = string.format("50%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+            if utils_percentage_in_range(percentage, 50, 1) then
+               local text = string.format("50%% of Blocks Mined (%d/%d)", to_mine, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               sent_50 = true
-               os.sleep(1)
+               os.sleep(2)
             end
 
-            if percentage >= 70 and not sent_70 then
-               local text = string.format("70%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+            if utils_percentage_in_range(percentage, 30, 1) then
+               local text = string.format("70%% of Blocks Mined (%d/%d)", to_mine, to_mine_cached)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               sent_70 = true
-               os.sleep(1)
+               os.sleep(2)
             end
          end
 
-         -- FIXED: Korrekter Modulo-Check (== 0 fehlte!)
-         if to_mine % 5 == 0 then
+         if to_mine % 5 then
             local text = string.format("To mine: %d, ETA: %s", to_mine, utils_get_time(seconds))
-            print(text)
+		      print(text)
          end
 
          if (to_mine == 0) then
@@ -132,4 +120,5 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
 
