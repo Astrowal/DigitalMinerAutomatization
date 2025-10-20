@@ -63,63 +63,63 @@ function main(i)
             percentage = math.floor(percentage)
 
             if percentage >= 20 and percentage < 35 and not sent_20 then
-               local text = string.format("20%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("20%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_20 = true
                os.sleep(1)
             end
 
             if percentage >= 50 and percentage < 65 and not sent_50 then
-               local text = string.format("50%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("50%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_50 = true
                os.sleep(1)
             end
 
             if percentage >= 70 and percentage < 85 and not sent_70 then
-               local text = string.format("70%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("70%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_70 = true
                os.sleep(1)
             end
             
             if percentage >= 90 and percentage < 95 and not sent_90 then
-               local text = string.format("90%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("90%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_90 = true
                os.sleep(1)
             end
 
             if percentage >= 95 and percentage < 96 and not sent_95 then
-               local text = string.format("95%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("95%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_95 = true
                os.sleep(1)
             end
 
             if percentage >= 96 and percentage < 97 and not sent_96 then
-               local text = string.format("96%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("96%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_96 = true
                os.sleep(1)
             end
 
             if percentage >= 97 and percentage < 98 and not sent_97 then
-               local text = string.format("97%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("97%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_97 = true
                os.sleep(1)
             end
 
             if percentage >= 98 and percentage < 99 and not sent_98 then
-               local text = string.format("98%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("98%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_98 = true
                os.sleep(1)
             end
 
             if percentage >= 99 and percentage < 100 and not sent_99 then
-               local text = string.format("99%% of Blocks Mined (%d/%d)", mined, to_mine_cached)
+               local text = string.format("99%% of Blocks Mined (%d/%d) ETA: s%", mined, to_mine_cached, utils_get_time(seconds))
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                sent_99 = true
                os.sleep(1)
@@ -191,6 +191,7 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
 
 
 
