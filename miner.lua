@@ -44,49 +44,39 @@ function main(i)
       
 
       while GlobalVars.m_pMiner.isRunning() do
-         local to_mine = GlobalVars.m_pMiner.getToMine()
-         local seconds = (to_mine * 0.5)
+   local to_mine = GlobalVars.m_pMiner.getToMine()
+   local seconds = (to_mine * 0.5)
 
-         if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-            local mined = to_mine_cached - to_mine
-            local percentage = (mined / to_mine_cached) * 100
-            percentage = math.floor(percentage)
+   if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
+      local mined = to_mine_cached - to_mine
+      send_progress_notification(progress_percentages, mined, to_mine_cached, seconds, sent_flags)
+   end
 
-          end
-    
-            if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-            local mined = to_mine_cached - to_mine
-            send_progress_notification(progress_percentages, mined, to_mine_cached, seconds, sent_flags)
-            end
+   if to_mine % 5 == 0 then
+      local text = string.format("To mine: %d, ETA: %s", to_mine, utils_get_time(seconds))
+      print(text)
+   end
 
-         if to_mine % 5 == 0 then
-            local text = string.format("To mine: %d, ETA: %s", to_mine, utils_get_time(seconds))
-            print(text)
-         end
-
-         if (to_mine == 0) then
-            if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-               local text = string.format("Done (%d/%d) rounds", i, Settings.MAX_CHUNKS)
-               GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               os.sleep(1)
-            end
-         end
-                
-            if i == Settings.MAX_CHUNKS and GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
-               local text = string.format("Pick me up! I am finished!")
-               GlobalVars.m_pChatBox.sendMessage(text, "Miner")
-               os.sleep(1)
-            end
-
-            utils_destroy_blocks(GlobalVars)
-
-            os.sleep(2)
-
-            utils_go_one_chunk()
-         end
-
-         os.sleep(0.5)
+   if (to_mine == 0) then
+      if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
+         local text = string.format("Done (%d/%d) rounds", i, Settings.MAX_CHUNKS)
+         GlobalVars.m_pChatBox.sendMessage(text, "Miner")
+         os.sleep(1)
       end
+            
+      if i == Settings.MAX_CHUNKS and GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
+         local text = string.format("Pick me up! I am finished!")
+         GlobalVars.m_pChatBox.sendMessage(text, "Miner")
+         os.sleep(1)
+      end
+
+      utils_destroy_blocks(GlobalVars)
+      os.sleep(2)
+      utils_go_one_chunk()
+   end
+
+   os.sleep(0.5)
+end
    end
 end
 
@@ -117,3 +107,4 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
