@@ -159,6 +159,29 @@ function utils_percentage_in_range(percentage, percentage_target, tolerance)
 
     return percentage >= lower_bound and percentage <= upper_bound
 end
+
+function send_progress_notification(percentages, mined, to_mine_cached, seconds, sent_flags)
+    local percentage = math.floor((mined / to_mine_cached) * 100)
+    
+    for i, threshold in ipairs(percentages) do
+        local next_threshold = percentages[i + 1] or (threshold + 1)
+        
+        if percentage >= threshold and percentage < next_threshold and not sent_flags[i] then
+            local text
+            if threshold == 100 then
+                text = string.format("%d%% of Blocks Mined (%d/%d)", threshold, mined, to_mine_cached)
+            else
+                text = string.format("%d%% of Blocks Mined (%d/%d) ETA: %s", threshold, mined, to_mine_cached, utils_get_time(seconds))
+            end
+            
+            GlobalVars.m_pChatBox.sendMessage(text, "Miner")
+            sent_flags[i] = true
+            os.sleep(1)
+            break
+        end
+    end
+end
 --Iraq was here
+
 
 
