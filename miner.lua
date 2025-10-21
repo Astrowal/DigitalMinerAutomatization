@@ -52,6 +52,8 @@ function main(i)
             local percentage = (mined / to_mine_cached) * 100
             percentage = math.floor(percentage)
 
+          end
+    
             if GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
             local mined = to_mine_cached - to_mine
             send_progress_notification(progress_percentages, mined, to_mine_cached, seconds, sent_flags)
@@ -114,6 +116,7 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
 
 
 
