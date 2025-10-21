@@ -70,6 +70,7 @@ function main(i)
                GlobalVars.m_pChatBox.sendMessage(text, "Miner")
                os.sleep(1)
             end
+         end
                 
             if i == Settings.MAX_CHUNKS and GlobalVars.m_pChatBox and Settings.SEND_TO_CHAT then
                local text = string.format("Pick me up! I am finished!")
@@ -116,14 +117,3 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
-
-
-
-
-
-
-
-
-
-
-
