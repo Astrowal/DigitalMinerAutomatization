@@ -35,7 +35,7 @@ function main(i)
       os.sleep(2)
 
       local to_mine_cached = GlobalVars.m_pMiner.getToMine()
-      local progress_percentages = {20, 50, 70, 90, 95, 96, 97, 98, 99, 100}
+      local progress_percentages = {0, 20, 50, 70, 90, 95, 96, 97, 98, 99, 100}
       local sent_flags = {}
 
       while GlobalVars.m_pMiner.isRunning() do
@@ -102,3 +102,4 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
+
