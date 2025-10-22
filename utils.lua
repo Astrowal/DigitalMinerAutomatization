@@ -177,7 +177,3 @@ function send_progress_notification(percentages, mined, to_mine_cached, seconds,
     end
 end
 --Iraq was here
-
-
-
-
