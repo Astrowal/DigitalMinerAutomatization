@@ -1,9 +1,5 @@
--- Computercraft script: 
-
--- Mekanism Digital Miner Automator version 2.1 FIXED
--- ChatBox + Prozent-Updates komplett gefixt!
 -- Original by MartiNJ409 - https://github.com/martinjanas
- 
+
 -- User Settings Area --
 Settings = {}
 Settings.MAX_CHUNKS = 16 -- The amount of chunks this script will run. (Default 16)
@@ -106,5 +102,3 @@ for i = 1, Settings.MAX_CHUNKS do
     
    main(i)
 end
-
-
