@@ -112,12 +112,7 @@ function utils_place_blocks(Blocks, GlobalVars)
 
 			os.sleep(0.3)
 
-			-- FIXED: Suche nach beiden Varianten!
-			GlobalVars.m_pChatBox = utils_get_peripheral_wrap("chatBox")
-			if not GlobalVars.m_pChatBox then
-			    GlobalVars.m_pChatBox = utils_get_peripheral_wrap("chat_box")
-			end
-			
+			GlobalVars.m_pChatBox = utils_get_peripheral_wrap("chat_box")
 			GlobalVars.m_pMiner = utils_get_peripheral_wrap("digitalMiner")
 	    end
 	end
@@ -182,6 +177,7 @@ function send_progress_notification(percentages, mined, to_mine_cached, seconds,
     end
 end
 --Iraq was here
+
 
 
 
